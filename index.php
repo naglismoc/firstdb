@@ -7,38 +7,50 @@
     <title>Document</title>
 </head>
 <body>
-<?php
-//================= backend =================
-include "./models/User.php";
+    <form action="" method="post">
+        <p>name</p>
+        <input type="text" name="name">    
+        <p>surname</p>
+        <input type="text" name="surname">
+        <p>email</p>
+        <input type="text" name="email">
+        <p>phoNo</p>
+        <input type="text" name="phoNo">
+        <button type="submit">išsaugoti</button>
+    </form>
 
+<?php
+include "./models/User.php";
 $servername = "localhost";
 $username = "root";
 $password = "";
 $db = "vcs_web0711_db";
-
-// Create connection
 $conn = new mysqli($servername, $username, $password, $db);
 
-// Check connection
-// if ($conn->connect_error) {
-//   die("Connection failed: " . $conn->connect_error);
-// }
-// echo "Connected successfully";
+?>
 
+<?php
+if($_SERVER['REQUEST_METHOD'] =="POST"){
+    User::save($conn);
+}
+
+
+?>
+
+
+<?php
+//================= backend =================
+
+$conn = new mysqli($servername, $username, $password, $db);
 $sql = "SELECT * FROM `users`";
 $result = $conn->query($sql);
-print_r($result);
 
 $users = [];
     // output data of each row
 while($row = $result->fetch_assoc()) {
     $users[] = new User($row["id"], $row["name"], $row["surname"], $row["email"], $row["phone_number"]);
 }
-
   $conn->close();
-
-//   print_r($users);
-
 
 //================= frontend =================
 
